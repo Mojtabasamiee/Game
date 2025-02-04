@@ -27,7 +27,7 @@ jobs:
           godot --headless --path project --export-release "Android" build/android/game.apk
 
       - name: آپلود APK به GitHub Actions
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4  # نسخه جدید برای آپلود فایل
         with:
           name: game-apk
           path: build/android/game.apk
