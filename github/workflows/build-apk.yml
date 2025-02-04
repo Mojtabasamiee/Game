@@ -1,0 +1,33 @@
+name: Build Godot 4 APK (ZIP Project)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    container: barichello/godot-ci:4.1.1
+
+    steps:
+      - name: دریافت سورس‌کد
+        uses: actions/checkout@v3
+
+      - name: استخراج فایل ZIP پروژه
+        run: |
+          mkdir -p project
+          unzip *.zip -d project  # استخراج فایل ZIP در پوشه "project"
+          ls project  # نمایش محتویات پوشه استخراج‌شده
+
+      - name: ساخت خروجی APK
+        run: |
+          mkdir -p build/android
+          godot --headless --path project --export-release "Android" build/android/game.apk
+
+      - name: آپلود APK به GitHub Actions
+        uses: actions/upload-artifact@v3
+        with:
+          name: game-apk
+          path: build/android/game.apk
